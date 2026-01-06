@@ -5,3 +5,13 @@ package  payment;
 service PaymentService {
     rpc CreatePayment(PaymentRequest) returns (PaymentResponse);
 }
+
+message PaymentRequest {
+  string order_id = 1;
+  float amount = 2;
+}
+
+message PaymentResponse {
+    string payment_id = 1;
+    string status = 2;
+}

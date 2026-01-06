@@ -1,4 +1,5 @@
 import threading
+import asyncio
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
@@ -17,7 +18,9 @@ async def lifespan(app:FastAPI):
     """
     # ============ Startup code ==============
     print('------ Application Startup...')
-    threading.Thread(target=serve, daemon=True).start()
+    # threading.Thread(target=serve, daemon=True).start()
+
+    asyncio.create_task(serve())
     
     yield       # Application handles requests during this phase
 

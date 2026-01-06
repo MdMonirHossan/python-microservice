@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import threading
 
 from .lifespan_context import lifespan
 

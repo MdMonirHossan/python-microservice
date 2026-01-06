@@ -1,0 +1,55 @@
+# Python
+# Byte-code files
+*.pyc
+__pycache__/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/python*/
+include/
+share/
+pip-wheel-metadata/
+share/python/
+# Windows
+Scripts/
+# Pyenv
+.pyenv/
+# Pipenv
+.venv/
+
+# IDEs and editors
+.vscode/        # Visual Studio Code
+.idea/          # PyCharm
+*.swp
+*~
+.hgtags
+.hgcheck
+
+# Miscellaneous
+.env            # Environment variables
+.DS_Store       # macOS-specific files
+coverage/       # Coverage reports
+.tox/           # Tox testing
+.mypy_cache/    # Mypy static analysis
+.ruff_cache/    # Ruff linter cache

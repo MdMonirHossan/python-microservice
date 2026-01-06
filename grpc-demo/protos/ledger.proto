@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package ledger;
+
+
+service LedgerService {
+    rpc RecordTransaction (LedgerRequest) returns (LedgerResponse);
+}
+
+message LedgerRequest {
+  string payment_id = 1;
+  float amount = 2;
+}
+
+message LedgerResponse {
+    bool success = 1;
+}

@@ -1,14 +1,10 @@
 from fastapi import FastAPI
 import threading
-from .grpc_server import serve
+
+from .lifespan_context import lifespan
 
 
-app = FastAPI()
-
-
-@app.on_event("startup")
-def start_grpc():
-    threading.Thread(target=serve, daemon=True).start()
+app = FastAPI(title="Payment Service", lifespan=lifespan)
 
 
 @app.get("/health")

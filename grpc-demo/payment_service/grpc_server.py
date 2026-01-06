@@ -19,7 +19,7 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
                 amount=request.amount
             )
         )
-
+        print(f"[PAYMENT] Payment {payment_id}, Amount {request.amount}")
         return payment_pb2.PaymentResponse(
             payment_id=payment_id,
             status="CREATED"

@@ -18,7 +18,7 @@ def create_payment(order_id: str, amount: float):
         )
     )
 
-    print('Got response form payment')
+    print('Got response form payment', response)
 
     return {
         "payment_id": response.payment_id,

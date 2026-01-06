@@ -1,3 +1,4 @@
+import logging
 import grpc
 from concurrent import futures
 from generated_pb2 import ledger_pb2, ledger_pb2_grpc
@@ -16,3 +17,5 @@ def serve():
     server.add_insecure_port("[::]:50052")
     server.start()
     server.wait_for_termination()
+
+    logging.log(f"Grpc server running on : {server}")

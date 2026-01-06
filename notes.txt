@@ -1,11 +1,8 @@
-#### Generate gRPC Code
+Generate gRPC Code
+  Run from project root
 
-Run from project root
-
-```bash
   python -m grpc_tools.protoc \
   -I protos \
   --python_out=. \
   --grpc_python_out=. \
   protos/payment.proto protos/ledger.proto
-```

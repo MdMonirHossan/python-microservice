@@ -9,13 +9,16 @@ class LedgerService(ledger_pb2_grpc.LedgerServiceServicer):
         print(f"[LEDGER] Payment {request.payment_id}, Amount {request.amount}")
         return ledger_pb2.LedgerResponse(success=True)
     
-async def serve():
+
+async def serve() -> grpc.aio.Server:
     server = grpc.aio.server()
+
     ledger_pb2_grpc.add_LedgerServiceServicer_to_server(
         LedgerService(), server
     )
+
     server.add_insecure_port("[::]:50052")
     await server.start()
-    await server.wait_for_termination()
 
-    logging.log(f"Grpc server running on : {server}")
+    logging.info("✅ gRPC server started on :50052")
+    return server

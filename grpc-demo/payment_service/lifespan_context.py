@@ -2,7 +2,8 @@ import threading
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from .grpc_server import serve
+# from .grpc_server import serve
+from .async_grpc_server import serve
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -16,9 +17,18 @@ async def lifespan(app:FastAPI):
     - app: FastAPI application instance.
     """
     # ============ Startup code ==============
-    print('------ Application Startup...')
-    threading.Thread(target=serve, daemon=True).start()
-    
-    yield       # Application handles requests during this phase
+    print("🚀 Application startup")
 
-    # ============= Shutdown code ================
+    # start GRPC server without async
+    # threading.Thread(target=serve, daemon=True).start()
+    # asyncio.create_task(serve())
+    
+    grpc_server = await serve()
+    app.state.grpc_server = grpc_server
+
+    try:
+        yield       # Application handles requests during this phase
+    finally:
+        # ============= Shutdown code ================
+        print("🛑 Application shutdown")
+        await grpc_server.stop(grace=5)

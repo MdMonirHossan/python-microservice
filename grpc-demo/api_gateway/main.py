@@ -24,3 +24,22 @@ def create_payment(order_id: str, amount: float):
         "payment_id": response.payment_id,
         "status": response.status
     }
+
+@app.post("/async-pay")
+async def async_create_payment(order_id: str, amount: int):
+    async with grpc.aio.insecure_channel(
+        "localhost:50051"
+    ) as channel:
+        stub = payment_pb2_grpc.PaymentServiceStub(channel)
+
+        response = await stub.CreatePayment(
+            payment_pb2.PaymentRequest(
+                order_id=order_id,
+                amount=amount
+            )
+        )
+
+    return {
+        "payment_id": response.payment_id,
+        "status": response.status
+    }

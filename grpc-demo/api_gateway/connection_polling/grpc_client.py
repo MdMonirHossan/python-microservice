@@ -9,7 +9,30 @@ class PaymentClient:
 
     async def connect(self):
         if not self._channel:
-            self._channel = grpc.aio.insecure_channel(self._target)
+            self._channel = grpc.aio.insecure_channel(
+                self._target,
+                # These control HTTP/2 keepalive pings between client ↔ server.
+                options=[
+                    # Send a keepalive ping every 30 seconds | Only if the connection is idle (no RPC traffic)
+                    # NATs, load balancers, firewalls silently drop idle TCP connections | This prevents “connection suddenly died” errors
+                    ("grpc.keepalive_time_ms", 30000),    # 30 Second
+
+                    # Wait 10 seconds for ping ACK | If not received → consider connection dead
+                    # Fast detection of dead peers | Avoid long hangs on broken connections
+                    ("grpc.keepalive_timeout_ms", 10000),   # 10 Second
+
+                    # Send keepalive pings even when no RPC is in progress
+                    # Prevent idle disconnects | Required for low-traffic services
+                    ("grpc.keepalive_permit_without_calls", 1), 
+                    
+                    # Forces periodic reconnection
+                    # Prevents stale / half-dead TCP connections
+                    # Important behind LBs & service meshes
+                    ("grpc.max_connection_idle_ms", 300000),      # 5 min
+                    ("grpc.max_connection_age_ms", 1800000),      # 30 min
+                    ("grpc.max_connection_age_grace_ms", 30000),  # 30 sec
+                ]
+            )
             self._stub = payment_pb2_grpc.PaymentServiceStub(self._channel)
 
     async def close(self):

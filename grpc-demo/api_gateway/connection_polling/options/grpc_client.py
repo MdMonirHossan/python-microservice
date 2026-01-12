@@ -1,3 +1,6 @@
+import json
+
+
 GRPC_OPTIONS = [
     # Send a keepalive ping every 30 seconds | Only if the connection is idle (no RPC traffic)
     # NATs, load balancers, firewalls silently drop idle TCP connections | This prevents “connection suddenly died” errors
@@ -28,4 +31,32 @@ GRPC_OPTIONS = [
     # Prevent unexpected failures
     ("grpc.max_send_message_length", 10 * 1024 * 1024),    # 10 MB
     ("grpc.max_receive_message_length", 10 * 1024 * 1024),
+
+    ("grpc.enable_retries", 1),
+    ("grpc.service_config", json.dumps({
+        "methodConfig": [{
+            "name": [{"service": "payment.PaymentService"}],
+            "retryPolicy": {
+                "maxAttempts": 4,
+                "initialBackoff": "0.2s",
+                "maxBackoff": "2s",
+                "backoffMultiplier": 2,
+                "retryableStatusCodes": ["UNAVAILABLE", "DEADLINE_EXCEEDED"]
+            }
+        }]
+    }))
 ]
+
+
+READ_ONLY_RETRY_CONFIG = {
+    "methodConfig": [{
+        "name": [{"service": "ledger.LedgerService"}],
+        "retryPolicy": {
+            "maxAttempts": 3,
+            "initialBackoff": "0.1s",
+            "maxBackoff": "1s",
+            "backoffMultiplier": 2,
+            "retryableStatusCodes": ["UNAVAILABLE"]
+        }
+    }]
+}

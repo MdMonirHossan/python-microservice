@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import grpc
 from .grpc_client import PaymentClient
-from generated_pb2 import payment_pb2
+from generated_pb2 import payment_pb2, ledger_pb2
 from .lifespan_context import payment_client, lifespan
 from .lifespan_context_multi_client import lifespan as multi_client_lifespan
 
@@ -19,18 +19,33 @@ async def create_payment(order_id: str, amount: int):
         amount=amount
     )
     try:
-        # single client
+        # =================== single client ================
         # response = await payment_client.stub.CreatePayment(
         #     request,
         #     timeout=2.0
         # )
 
-        # Multi Client
+
+        # ============== Multi Client (Payment Service) ==========
         response = await app.state.payment_stub.CreatePayment(
             request,
             timeout=2.0
         )
         print('------------------ got resposne --- ', response)
+
+        # Ledger Service
+        payment_id = "pay_123"
+
+        led_request = ledger_pb2.LedgerRequest(
+            payment_id=payment_id,
+            amount=amount
+        )
+
+        led_response = await app.state.ledger_stub.RecordTransaction(
+            led_request,
+            timeout=2.0
+        )
+        print('------------------ got resposne for ledger_response --- ', led_response)
     except grpc.aio.AioRpcError as e:
         raise HTTPException(
             status_code=502,

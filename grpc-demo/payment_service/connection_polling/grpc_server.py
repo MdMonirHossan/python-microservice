@@ -16,7 +16,7 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
 
         await self.ledger_client.stub.RecordTransaction(
             request,
-            # timeout=2.0
+            timeout=2.0
         )
 
         return payment_pb2.PaymentResponse(

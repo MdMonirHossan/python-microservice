@@ -21,3 +21,14 @@ class PaymentClient:
         if not self._stub:
             raise RuntimeError("PaymentClient not connected")
         return self._stub
+    
+
+# grpc.aio.insecure_channel(
+#     target,
+#     options=[
+#         ("grpc.keepalive_time_ms", 30000),
+#         ("grpc.keepalive_timeout_ms", 10000),
+#         ("grpc.keepalive_permit_without_calls", 1),
+#     ],
+# )
+

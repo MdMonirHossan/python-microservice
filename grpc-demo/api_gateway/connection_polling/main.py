@@ -14,10 +14,18 @@ app = FastAPI(title="API Gateway", lifespan=multi_client_lifespan)
 @app.post("/pay")
 async def create_payment(order_id: str, amount: int):
     
+    # ===================== Payment Service (Service 01) ==================
     request = payment_pb2.PaymentRequest(
         order_id=order_id,
         amount=amount
     )
+
+    # ==================== Ledger Service (Service 02) ======================
+    # payment_id = "pay_123"
+    # led_request = ledger_pb2.LedgerRequest(
+    #     payment_id=payment_id,
+    #     amount=amount
+    # )
     try:
         # =================== single client ================
         # response = await payment_client.stub.CreatePayment(
@@ -26,26 +34,21 @@ async def create_payment(order_id: str, amount: int):
         # )
 
 
-        # ============== Multi Client (Payment Service) ==========
+        # ============== Multi Client (Payment Service 01) ==========
         response = await app.state.payment_stub.CreatePayment(
             request,
             timeout=2.0
         )
         print('------------------ got resposne --- ', response)
 
-        # Ledger Service
-        payment_id = "pay_123"
+        # ======================== Ledger Service (02) =================
 
-        led_request = ledger_pb2.LedgerRequest(
-            payment_id=payment_id,
-            amount=amount
-        )
-
-        led_response = await app.state.ledger_stub.RecordTransaction(
-            led_request,
-            timeout=2.0
-        )
-        print('------------------ got resposne for ledger_response --- ', led_response)
+        # led_response = await app.state.ledger_stub.RecordTransaction(
+        #     led_request,
+        #     timeout=2.0
+        # )
+        # print('------------------ got resposne for ledger_response --- ', led_response)
+        # ==================================== xxxx =============================
     except grpc.aio.AioRpcError as e:
         raise HTTPException(
             status_code=502,

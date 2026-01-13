@@ -30,12 +30,12 @@ async def lifespan(app:FastAPI):
         options=GRPC_OPTIONS,
     )
 
-    app.state.ledger_stub = await registry.get_stub(
-        name="ledger",
-        stub_cls=ledger_pb2_grpc.LedgerServiceStub,
-        target="localhost:50052",
-        options=GRPC_OPTIONS,
-    )
+    # app.state.ledger_stub = await registry.get_stub(
+    #     name="ledger",
+    #     stub_cls=ledger_pb2_grpc.LedgerServiceStub,
+    #     target="localhost:50052",
+    #     options=GRPC_OPTIONS,
+    # )
 
     try:
         yield       # Application handles requests during this phase

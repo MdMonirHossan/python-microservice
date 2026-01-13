@@ -1,6 +1,6 @@
 import grpc
 from generated_pb2 import payment_pb2_grpc
-from .options.grpc_client import GRPC_OPTIONS
+from .options.grpc_client_options import GRPC_OPTIONS
 
 class PaymentClient:
     def __init__(self, target: str):

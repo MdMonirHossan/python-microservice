@@ -1,10 +1,10 @@
 import threading
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from .options.grpc_client import GRPC_OPTIONS
+from .options.grpc_client_options import GRPC_OPTIONS
 from generated_pb2 import payment_pb2_grpc, ledger_pb2_grpc
 
-from .common.grpc.registry import GrpcClientRegistry
+from .common.grpc.client_registry import GrpcClientRegistry
 
 
 registry = GrpcClientRegistry()

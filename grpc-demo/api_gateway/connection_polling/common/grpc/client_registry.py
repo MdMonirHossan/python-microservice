@@ -2,7 +2,16 @@ import grpc
 from typing import Dict, Type
 
 class GrpcClientRegistry:
+    """
+    A registry for managing the lifecycle of asynchronous gRPC channels and stubs.
+
+    This class ensures that channels and stubs are reused based on their name, 
+    preventing the overhead of creating multiple connections to the same target.
+    """
     def __init__(self):
+        """
+        Initializes the registry with empty storage for channels and stubs.
+        """
         self._channels: Dict[str, grpc.aio.Channel] = {}
         self._stubs = {}
 

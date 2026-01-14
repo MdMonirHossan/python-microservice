@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import asyncio
 import grpc
 from .grpc_server import PaymentService
-from .grpc_client import LedgerClient
+from .common.grpc.single_grpc_client import LedgerClient
 from generated_pb2 import payment_pb2_grpc
 
 app = FastAPI()

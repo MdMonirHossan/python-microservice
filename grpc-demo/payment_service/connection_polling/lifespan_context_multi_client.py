@@ -23,7 +23,6 @@ async def lifespan(app:FastAPI):
     # ============ Startup code ==============
     print("🚀 Application startup")
 
-
     app.state.ledger_stub = await registry.get_stub(
         name="ledger",
         stub_cls=ledger_pb2_grpc.LedgerServiceStub,

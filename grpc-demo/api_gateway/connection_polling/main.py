@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 import grpc
-from .grpc_client import PaymentClient
+from .common.grpc.single_grpc_client import PaymentClient
 from generated_pb2 import payment_pb2, ledger_pb2
-from .lifespan_context import payment_client, lifespan
-from .lifespan_context_multi_client import lifespan as multi_client_lifespan
+from .context.lifespan_context import payment_client, lifespan
+from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 
 # Connect with single grpc client
 # app = FastAPI(title="API Gateway", lifespan=lifespan)

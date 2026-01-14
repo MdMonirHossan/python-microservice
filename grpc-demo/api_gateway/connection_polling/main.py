@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 import grpc
 from .common.grpc.single_grpc_client import PaymentClient
 from generated_pb2 import payment_pb2, ledger_pb2
-from .context.lifespan_context import payment_client, lifespan
+from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 
 # Connect with single grpc client

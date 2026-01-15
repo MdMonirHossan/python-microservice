@@ -25,7 +25,7 @@ async def lifespan(app:FastAPI):
     # Start gRPC client (Ledger)
     await ledger_client.connect()
 
-     # Start gRPC server (Payment)
+    # Start gRPC server (Payment)
     grpc_server = grpc.aio.server()
 
     payment_pb2_grpc.add_PaymentServiceServicer_to_server(

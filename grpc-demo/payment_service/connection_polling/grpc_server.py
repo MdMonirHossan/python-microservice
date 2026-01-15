@@ -14,14 +14,15 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
             with the Ledger service.
     """
 
-    def __init__(self, ledger_client):
+    def __init__(self, ledger_stub):
         """
-        Initializes the PaymentService with a ledger client.
+        Initializes the PaymentService with a ledger stub.
 
         Args:
-            ledger_client: An object containing a gRPC stub for Ledger operations.
+            ledger_stub: An object containing a gRPC stub for Ledger operations.
         """
-        self.ledger_client = ledger_client
+        self.ledger_stub = ledger_stub
+
 
     async def CreatePayment(self, request, context):
         """

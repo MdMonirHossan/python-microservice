@@ -25,21 +25,22 @@ async def lifespan(app:FastAPI):
     # ============ Startup code ==============
     print("🚀 Application startup")
 
-    # Connect GRPC Clients
-    app.state.ledger_stub = await registry.get_stub(
+    # Create Ledger gRPC client (channel + stub)
+    ledger_stub = await registry.get_stub(
         name="ledger",
         stub_cls=ledger_pb2_grpc.LedgerServiceStub,
         target="localhost:50052",
         options=GRPC_OPTIONS,
     )
 
-    # Payment service config
-    # Start gRPC server (Payment)
+    app.state.ledger_stub = ledger_stub
+
+    # Start Payment gRPC server
     grpc_server = grpc.aio.server()
 
     payment_pb2_grpc.add_PaymentServiceServicer_to_server(
-        PaymentService(ledger_client),
-        grpc_server
+        PaymentService(ledger_stub),
+        grpc_server,
     )
 
     grpc_server.add_insecure_port("[::]:50051")
@@ -48,9 +49,16 @@ async def lifespan(app:FastAPI):
     app.state.grpc_server = grpc_server
 
     try:
-        yield       # Application handles requests during this phase
+        yield
     finally:
         # ============= Shutdown code ================
+        print("🛑 Payment Service shutdown")
+
+        # Stop accepting new gRPC requests
+        await grpc_server.stop(grace=5)
+
+        # Close all outbound gRPC channels
         await registry.close_all()
+
 
     

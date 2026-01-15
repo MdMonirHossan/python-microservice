@@ -53,7 +53,7 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
 
         # Execute the cross-service call with a deadline
         # The 'await' ensures this thread isn't blocked while waiting for the network
-        await self.ledger_client.stub.RecordTransaction(
+        await self.ledger_stub.RecordTransaction(
             request,
             timeout=2.0
         )

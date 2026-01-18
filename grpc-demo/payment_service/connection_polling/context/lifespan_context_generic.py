@@ -2,7 +2,8 @@ import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from generated_pb2 import payment_pb2_grpc
-from ...grpc_server import PaymentService
+# from ...grpc_server import PaymentService
+from ..grpc.server import PaymentService
 from ..registry.grpc_registry import GrpcClientRegistry
 from ..options.grpc_client_options import GRPC_OPTIONS
 from ..registry.service_catalog import SERVICE_CATALOG

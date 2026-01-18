@@ -1,7 +1,6 @@
-from payment_service.methods.card import CardPayment
-from payment_service.methods.wallet import WalletPayment
+from ..methods.card import CardPayment
 
 METHOD_REGISTRY = {
     "CARD": CardPayment(),
-    "WALLET": WalletPayment(),
+    # "WALLET": WalletPayment(),
 }

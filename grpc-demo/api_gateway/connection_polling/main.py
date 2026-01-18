@@ -75,6 +75,7 @@ async def create_payment(order_id: str, amount: int):
     request = cfg["request_cls"](
         order_id=order_id,
         amount=amount,
+        method="CARD",
     )
     try:
         rpc = getattr(stub, cfg["method"])

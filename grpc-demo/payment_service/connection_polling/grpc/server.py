@@ -11,7 +11,7 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
             handler = METHOD_REGISTRY[request.method]
             return await handler.process(request, self.registry)
         except KeyError:
-            context.abort(
+            await context.abort(
                 grpc.StatusCode.INVALID_ARGUMENT,
                 f"Unknown payment method: {request.method}"
             )

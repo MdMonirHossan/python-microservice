@@ -1,5 +1,5 @@
 from ..methods.base import PaymentMethod
-from generated_pb2 import ledger_pb2
+from generated_pb2 import ledger_pb2, payment_pb2
 
 class CardPayment(PaymentMethod):
     async def process(self, request, registry):
@@ -12,5 +12,8 @@ class CardPayment(PaymentMethod):
             ),
             timeout=2.0,
         )
-
-        return {"status": "CARD_SUCCESS"}
+        print(f"[PAYMENT] Payment {request.order_id}, Amount {request.amount}")
+        return payment_pb2.PaymentResponse(
+            payment_id=request.order_id,
+            status="CREATED"
+        )

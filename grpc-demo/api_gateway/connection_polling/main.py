@@ -4,12 +4,16 @@ from .common.grpc.single_grpc_client import PaymentClient
 from generated_pb2 import payment_pb2, ledger_pb2
 from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
+from .context.lifespan_context_generic import lifespan as lifespan_generic
 
 # Connect with single grpc client
 # app = FastAPI(title="API Gateway", lifespan=lifespan)
 
 # Connect with multi grpc client
-app = FastAPI(title="API Gateway", lifespan=multi_client_lifespan)
+# app = FastAPI(title="API Gateway", lifespan=multi_client_lifespan)
+
+# Connect with multi grpc client
+app = FastAPI(title="API Gateway", lifespan=lifespan_generic)
 
 @app.post("/pay")
 async def create_payment(order_id: str, amount: int):

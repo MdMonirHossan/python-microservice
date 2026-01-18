@@ -46,6 +46,8 @@ async def lifespan(app: FastAPI):
     grpc_server.add_insecure_port("[::]:50051")
     await grpc_server.start()
 
+    print("✅ Payment gRPC server STARTED on port 50051")
+
     app.state.grpc_server = grpc_server
 
     try:

@@ -14,7 +14,8 @@ def create_payment(order_id: str, amount: float):
     response = stub.CreatePayment(
         payment_pb2.PaymentRequest(
             order_id=order_id,
-            amount=amount
+            amount=amount,
+            method="CARD"
         )
     )
 
@@ -35,7 +36,8 @@ async def async_create_payment(order_id: str, amount: int):
         response = await stub.CreatePayment(
             payment_pb2.PaymentRequest(
                 order_id=order_id,
-                amount=amount
+                amount=amount,
+                method="CARD",
             )
         )
 

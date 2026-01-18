@@ -9,6 +9,7 @@ service PaymentService {
 message PaymentRequest {
   string order_id = 1;
   float amount = 2;
+  string method = 3;
 }
 
 message PaymentResponse {

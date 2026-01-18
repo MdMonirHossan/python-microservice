@@ -22,7 +22,8 @@ async def create_payment(order_id: str, amount: int):
     # ===================== Payment Service (Service 01) ==================
     request = payment_pb2.PaymentRequest(
         order_id=order_id,
-        amount=amount
+        amount=amount,
+        method="CARD",
     )
 
     # ==================== Ledger Service (Service 02) ======================
@@ -75,14 +76,14 @@ async def create_payment(order_id: str, amount: int):
         order_id=order_id,
         amount=amount,
     )
-    print('------ cfg - ', cfg, '------- stub - ', stub, '------ request - ', request)
     try:
         rpc = getattr(stub, cfg["method"])
-        print('--------------- rpc -- ', rpc)
         response = await rpc(request, timeout=2.0)
-        print('---------------- resposne ---- ', response)
-
     except grpc.aio.AioRpcError as e:
+        print("==== gRPC ERROR ====")
+        print("Code:", e.code())
+        print("Details:", e.details())
+        print("Debug:", e.debug_error_string())
         raise HTTPException(
             status_code=502,
             detail=f"{cfg['service']} service unavailable: {e.code().name}",

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rpayment.proto\x12\x07payment\"2\n\x0ePaymentRequest\x12\x10\n\x08order_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x02\"5\n\x0fPaymentResponse\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12\x0e\n\x06status\x18\x02 \x01(\t2T\n\x0ePaymentService\x12\x42\n\rCreatePayment\x12\x17.payment.PaymentRequest\x1a\x18.payment.PaymentResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rpayment.proto\x12\x07payment\"B\n\x0ePaymentRequest\x12\x10\n\x08order_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x02\x12\x0e\n\x06method\x18\x03 \x01(\t\"5\n\x0fPaymentResponse\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12\x0e\n\x06status\x18\x02 \x01(\t2T\n\x0ePaymentService\x12\x42\n\rCreatePayment\x12\x17.payment.PaymentRequest\x1a\x18.payment.PaymentResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,9 +32,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'payment_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_PAYMENTREQUEST']._serialized_start=26
-  _globals['_PAYMENTREQUEST']._serialized_end=76
-  _globals['_PAYMENTRESPONSE']._serialized_start=78
-  _globals['_PAYMENTRESPONSE']._serialized_end=131
-  _globals['_PAYMENTSERVICE']._serialized_start=133
-  _globals['_PAYMENTSERVICE']._serialized_end=217
+  _globals['_PAYMENTREQUEST']._serialized_end=92
+  _globals['_PAYMENTRESPONSE']._serialized_start=94
+  _globals['_PAYMENTRESPONSE']._serialized_end=147
+  _globals['_PAYMENTSERVICE']._serialized_start=149
+  _globals['_PAYMENTSERVICE']._serialized_end=233
 # @@protoc_insertion_point(module_scope)

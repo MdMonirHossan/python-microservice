@@ -2,7 +2,7 @@ import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from ..options.grpc_client_options import GRPC_OPTIONS
-from ..common.registry.service_catalog import SERVICE_CATALOG
+from ..grpc.catalog import SERVICE_CATALOG
 from ..common.grpc.client_registry_generic import GrpcClientRegistry
 
 registry = GrpcClientRegistry(GRPC_OPTIONS)
@@ -23,12 +23,14 @@ async def lifespan(app: FastAPI):
     # =============================================
     # Register ALL downstream services dynamically
     # =============================================
-    for name, cfg in SERVICE_CATALOG.items():
+    for cfg in SERVICE_CATALOG.values():
         await registry.register(
-            name=name,
+            name=cfg["service"],
             stub_cls=cfg["stub"],
             target=cfg["target"],
         )
+    
+    app.state.grpc_registry = registry
 
     try:
         yield
@@ -38,3 +40,4 @@ async def lifespan(app: FastAPI):
 
         # Close all outbound gRPC channels
         await registry.close_all()
+

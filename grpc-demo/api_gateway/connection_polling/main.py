@@ -5,6 +5,7 @@ from generated_pb2 import payment_pb2, ledger_pb2
 from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 from .context.lifespan_context_generic import lifespan as lifespan_generic
+from .grpc.catalog import SERVICE_CATALOG
 
 # Connect with single grpc client
 # app = FastAPI(title="API Gateway", lifespan=lifespan)
@@ -62,4 +63,32 @@ async def create_payment(order_id: str, amount: int):
     return {
         "payment_id": response.payment_id,
         "status": response.status
+    }
+
+@app.post("/pay-dynamic")
+async def create_payment(order_id: str, amount: int):
+    cfg = SERVICE_CATALOG["create_payment"]
+
+    stub = app.state.grpc_registry.get(cfg["service"])
+
+    request = cfg["request_cls"](
+        order_id=order_id,
+        amount=amount,
+    )
+    print('------ cfg - ', cfg, '------- stub - ', stub, '------ request - ', request)
+    try:
+        rpc = getattr(stub, cfg["method"])
+        print('--------------- rpc -- ', rpc)
+        response = await rpc(request, timeout=2.0)
+        print('---------------- resposne ---- ', response)
+
+    except grpc.aio.AioRpcError as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"{cfg['service']} service unavailable: {e.code().name}",
+        )
+
+    return {
+        "payment_id": response.payment_id,
+        "status": response.status,
     }

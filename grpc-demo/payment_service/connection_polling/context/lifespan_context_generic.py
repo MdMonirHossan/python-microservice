@@ -11,9 +11,20 @@ registry = GrpcClientRegistry(GRPC_OPTIONS)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """
+    Async lifespan context manager for FastAPI to initialize and close resources..
+
+    - Startup: Connect to the grpc client
+    - Yield: hands control to the app while it serves requests.
+    - Shutdown: Close grpc client connection.
+    Parameters:
+    - app: FastAPI application instance.
+    """
     print("🚀 Payment Service startup")
 
-    # 1️⃣ Register ALL downstream services dynamically
+    # =============================================
+    # Register ALL downstream services dynamically
+    # =============================================
     for name, cfg in SERVICE_CATALOG.items():
         await registry.register(
             name=name,
@@ -21,7 +32,9 @@ async def lifespan(app: FastAPI):
             target=cfg["target"],
         )
 
-    # 2️⃣ Start Payment gRPC server
+    # =================================
+    # Start Payment gRPC server
+    # =================================
     grpc_server = grpc.aio.server()
 
     payment_pb2_grpc.add_PaymentServiceServicer_to_server(

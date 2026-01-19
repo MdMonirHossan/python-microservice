@@ -9,7 +9,7 @@ SERVICE_CATALOG = {
         # "target": "payment:50051",
         "target": "localhost:50051",
         "method": "CreatePayment",
-        "request_cls": payment_pb2.PaymentRequest,
+        # "request_cls": payment_pb2.PaymentRequest,
     },
     # "refund_payment": {
     #     "service": "payment",

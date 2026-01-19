@@ -6,6 +6,7 @@ from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 from .context.lifespan_context_generic import lifespan as lifespan_generic
 from .grpc.catalog import SERVICE_CATALOG
+from .grpc.mapper import http_to_payment_request, payment_response_to_http
 
 # Connect with single grpc client
 # app = FastAPI(title="API Gateway", lifespan=lifespan)
@@ -72,11 +73,12 @@ async def create_payment(order_id: str, amount: int):
 
     stub = app.state.grpc_registry.get(cfg["service"])
 
-    request = cfg["request_cls"](
-        order_id=order_id,
-        amount=amount,
-        method="CARD",
-    )
+    # request = cfg["request_cls"](
+    #     order_id=order_id,
+    #     amount=amount,
+    #     method="CARD",
+    # )
+    request = http_to_payment_request()
     try:
         rpc = getattr(stub, cfg["method"])
         response = await rpc(request, timeout=2.0)

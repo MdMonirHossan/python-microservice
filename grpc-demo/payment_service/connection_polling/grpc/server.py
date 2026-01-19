@@ -7,6 +7,13 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
         self.registry = registry
     
     async def CreatePayment(self, request, context):
+        """
+        Docstring for CreatePayment
+        
+        :param self: Description
+        :param request: Description
+        :param context: Description
+        """
         try:
             handler = METHOD_REGISTRY[request.method]
             return await handler.process(request, self.registry)

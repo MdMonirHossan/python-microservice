@@ -73,26 +73,18 @@ async def create_payment(order_id: str, amount: int):
 
     stub = app.state.grpc_registry.get(cfg["service"])
 
-    # request = cfg["request_cls"](
-    #     order_id=order_id,
-    #     amount=amount,
-    #     method="CARD",
-    # )
-    request = http_to_payment_request()
+    request = http_to_payment_request(payload={
+        "order_id":order_id, 
+        "amount":amount, 
+        "method":"CARD"
+    })
     try:
         rpc = getattr(stub, cfg["method"])
         response = await rpc(request, timeout=2.0)
     except grpc.aio.AioRpcError as e:
-        print("==== gRPC ERROR ====")
-        print("Code:", e.code())
-        print("Details:", e.details())
-        print("Debug:", e.debug_error_string())
         raise HTTPException(
             status_code=502,
-            detail=f"{cfg['service']} service unavailable: {e.code().name}",
+            detail=f"{cfg['service']} service unavailable: {e.code().name} | Details: {e.details()} | Debug: {e.debug_error_string()}",
         )
 
-    return {
-        "payment_id": response.payment_id,
-        "status": response.status,
-    }
+    return payment_response_to_http(response)

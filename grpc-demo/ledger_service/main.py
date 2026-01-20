@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-import threading
 from .grpc_server import serve
-from .lifespan_context import lifespan
+from .context.lifespan_context_single_client import lifespan
 
-
+# For single client (Sync)
 app = FastAPI(title="Ledger", lifespan=lifespan)
+
+# For
 
 
 @app.get("/health")

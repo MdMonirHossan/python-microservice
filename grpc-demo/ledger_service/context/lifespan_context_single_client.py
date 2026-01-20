@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 # from .grpc_server import serve
-from .async_grpc_server import serve
+from ..async_grpc_server import serve
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):

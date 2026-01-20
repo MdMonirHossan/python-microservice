@@ -30,3 +30,13 @@ Done.
 - PaymentService
 - gRPC server
 - Registry
+
+
+API Gateway = Translator + Guard
+Payment Service = Orchestrator
+Ledger Service = Source of Truth
+
+Server = inbound APIs
+Client = outbound calls
+Mapper = protocol translator
+Registry = connection owner

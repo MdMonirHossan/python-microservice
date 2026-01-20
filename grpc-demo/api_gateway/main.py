@@ -8,6 +8,14 @@ app = FastAPI()
 
 @app.post("/pay")
 def create_payment(order_id: str, amount: float):
+    """
+    Args:
+        order_id:
+        amount:
+
+    Returns:
+
+    """
     channel = grpc.insecure_channel("localhost:50051")
     stub = payment_pb2_grpc.PaymentServiceStub(channel)
 
@@ -28,6 +36,13 @@ def create_payment(order_id: str, amount: float):
 
 @app.post("/async-pay")
 async def async_create_payment(order_id: str, amount: int):
+    """
+    Args:
+        order_id:
+        amount:
+
+    Returns:
+    """
     async with grpc.aio.insecure_channel(
         "localhost:50051"
     ) as channel:

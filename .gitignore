@@ -46,6 +46,9 @@ Scripts/
 .hgtags
 .hgcheck
 
+.vscode
+.idea
+
 # Miscellaneous
 .env            # Environment variables
 .DS_Store       # macOS-specific files

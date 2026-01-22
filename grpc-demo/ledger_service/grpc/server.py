@@ -24,7 +24,7 @@ class LedgerService(ledger_pb2_grpc.LedgerServiceServicer):
                 f"Unknown payment method: {request.method}"
             )
         except Exception as e:
-            context.abort(
+            await context.abort(
                 grpc.StatusCode.INTERNAL,
                 f"Internal error: {str(e)}"
             )

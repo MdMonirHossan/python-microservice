@@ -23,7 +23,7 @@ class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
                 f"Unknown payment method: {request.method}"
             )
         except Exception as e:
-            context.abort(
+            await context.abort(
                 grpc.StatusCode.INTERNAL,
                 f"Internal error: {str(e)}"
             )

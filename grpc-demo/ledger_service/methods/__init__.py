@@ -1,2 +1,5 @@
+from ..methods.ledger import LedgerEntry
 
-METHOD_REGISTRY = {}
+METHOD_REGISTRY = {
+    "LEDGER": LedgerEntry()
+}

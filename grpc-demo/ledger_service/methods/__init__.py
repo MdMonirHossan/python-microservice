@@ -1,0 +1,2 @@
+
+METHOD_REGISTRY = {}

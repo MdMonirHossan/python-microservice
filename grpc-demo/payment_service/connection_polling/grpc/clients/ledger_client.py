@@ -12,6 +12,7 @@ class LedgerClient:
             ledger_pb2.LedgerRequest(
                 payment_id=self.request.order_id,
                 amount=self.request.amount,
+                method="LEDGER",
             ),
             timeout=2.0,
         )

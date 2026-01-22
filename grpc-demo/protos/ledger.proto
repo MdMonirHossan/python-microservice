@@ -10,6 +10,7 @@ service LedgerService {
 message LedgerRequest {
   string payment_id = 1;
   float amount = 2;
+  string method = 3;
 }
 
 message LedgerResponse {

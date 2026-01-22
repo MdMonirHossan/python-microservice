@@ -4,10 +4,10 @@ from .context.lifespan_context_single_client import lifespan
 from .context.lifespan_context_generic import lifespan as lifespan_generic
 
 # For single client (Sync)
-app = FastAPI(title="Ledger", lifespan=lifespan)
+# app = FastAPI(title="Ledger", lifespan=lifespan)
 
 # For multi client (Async)
-# app = FastAPI(title="Ledger", lifespan=lifespan_generic)
+app = FastAPI(title="Ledger", lifespan=lifespan_generic)
 
 # For
 

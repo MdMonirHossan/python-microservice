@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cledger.proto\x12\x06ledger\"3\n\rLedgerRequest\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x02\"!\n\x0eLedgerResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32S\n\rLedgerService\x12\x42\n\x11RecordTransaction\x12\x15.ledger.LedgerRequest\x1a\x16.ledger.LedgerResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cledger.proto\x12\x06ledger\"C\n\rLedgerRequest\x12\x12\n\npayment_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\x02\x12\x0e\n\x06method\x18\x03 \x01(\t\"!\n\x0eLedgerResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32S\n\rLedgerService\x12\x42\n\x11RecordTransaction\x12\x15.ledger.LedgerRequest\x1a\x16.ledger.LedgerResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,9 +32,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ledger_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_LEDGERREQUEST']._serialized_start=24
-  _globals['_LEDGERREQUEST']._serialized_end=75
-  _globals['_LEDGERRESPONSE']._serialized_start=77
-  _globals['_LEDGERRESPONSE']._serialized_end=110
-  _globals['_LEDGERSERVICE']._serialized_start=112
-  _globals['_LEDGERSERVICE']._serialized_end=195
+  _globals['_LEDGERREQUEST']._serialized_end=91
+  _globals['_LEDGERRESPONSE']._serialized_start=93
+  _globals['_LEDGERRESPONSE']._serialized_end=126
+  _globals['_LEDGERSERVICE']._serialized_start=128
+  _globals['_LEDGERSERVICE']._serialized_end=211
 # @@protoc_insertion_point(module_scope)

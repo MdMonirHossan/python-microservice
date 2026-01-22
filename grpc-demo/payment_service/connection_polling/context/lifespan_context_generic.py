@@ -1,3 +1,4 @@
+import logging
 import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
@@ -7,6 +8,8 @@ from ..grpc.server import PaymentService
 from ..registry.grpc_registry import GrpcClientRegistry
 from ..options.grpc_client_options import GRPC_OPTIONS
 from ..registry.service_catalog import SERVICE_CATALOG
+
+logger = logging.getLogger(__name__)
 
 registry = GrpcClientRegistry(GRPC_OPTIONS)
 
@@ -46,6 +49,7 @@ async def lifespan(app: FastAPI):
     grpc_server.add_insecure_port("[::]:50051")
     await grpc_server.start()
 
+    logger.info(f"✅ Payment gRPC server STARTED on port 50051 : {grpc_server}")
     print("✅ Payment gRPC server STARTED on port 50051")
 
     app.state.grpc_server = grpc_server

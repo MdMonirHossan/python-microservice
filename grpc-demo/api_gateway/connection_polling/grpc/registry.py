@@ -1,4 +1,5 @@
 # shared gRPC registry
+# Manages gRPC channels & stubs
 import grpc
 from typing import Dict, Type
 

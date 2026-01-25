@@ -1,3 +1,16 @@
+"""
+Payment-related HTTP endpoints.
+
+Routes do:
+- choose action
+- call mapper
+- invoke gRPC
+- return HTTP response
+
+Routes do NOT:
+- know protobuf fields
+- contain business logic
+"""
 from fastapi import FastAPI, HTTPException
 import grpc
 from .common.grpc.single_grpc_client import PaymentClient
@@ -6,7 +19,9 @@ from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 from .context.lifespan_context_generic import lifespan as lifespan_generic
 from .grpc.service_catalog import SERVICE_CATALOG
-from .grpc.mapper import http_to_payment_request, payment_response_to_http
+from .grpc.action_catalog import ACTION_CATALOG
+from .grpc.mapper.mapper_registry import MAPPER_REGISTRY
+# from .grpc.mapper import http_to_payment_request, payment_response_to_http
 
 # Connect with single grpc client
 # app = FastAPI(title="API Gateway", lifespan=lifespan)
@@ -69,23 +84,52 @@ async def create_payment(order_id: str, amount: int):
 
 @app.post("/pay-dynamic")
 async def create_payment(order_id: str, amount: int):
-    cfg = SERVICE_CATALOG["payment_service"]
+    action = "create_payment"
 
-    stub = app.state.grpc_registry.get(cfg["service"])
+    action_cfg = ACTION_CATALOG[action]
+    mapper = MAPPER_REGISTRY[action]
 
-    request = http_to_payment_request(payload={
-        "order_id":order_id, 
-        "amount":amount, 
-        "method":"CARD"
+    stub = app.state.grpc_registry.get(
+        action_cfg["service"]
+    )
+
+    grpc_request = mapper["to_grpc"]({
+        "order_id": order_id,
+        "amount": amount,
+        "method": "CARD",
     })
+
     try:
-        rpc = getattr(stub, cfg["method"])
-        print('=== RPC ======== ', rpc.__dict__)
-        response = await rpc(request, timeout=2.0)
+        rpc = getattr(stub, action_cfg["rpc"])
+        grpc_response = await rpc(
+            grpc_request,
+            timeout=action_cfg["timeout"],
+        )
     except grpc.aio.AioRpcError as e:
         raise HTTPException(
             status_code=502,
-            detail=f"{cfg['service']} service unavailable: {e.code().name} | Details: {e.details()} | Debug: {e.debug_error_string()}",
+            detail=f"{action_cfg['service']} unavailable",
         )
 
-    return payment_response_to_http(response)
+    return mapper["from_grpc"](grpc_response)
+
+    # cfg = SERVICE_CATALOG["payment_service"]
+
+    # stub = app.state.grpc_registry.get(cfg["service"])
+
+    # request = http_to_payment_request(payload={
+    #     "order_id":order_id, 
+    #     "amount":amount, 
+    #     "method":"CARD"
+    # })
+    # try:
+    #     rpc = getattr(stub, cfg["method"])
+    #     print('=== RPC ======== ', rpc.__dict__)
+    #     response = await rpc(request, timeout=2.0)
+    # except grpc.aio.AioRpcError as e:
+    #     raise HTTPException(
+    #         status_code=502,
+    #         detail=f"{cfg['service']} service unavailable: {e.code().name} | Details: {e.details()} | Debug: {e.debug_error_string()}",
+    #     )
+
+    # return payment_response_to_http(response)

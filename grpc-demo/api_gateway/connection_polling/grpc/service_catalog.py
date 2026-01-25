@@ -1,9 +1,8 @@
 # service + method mapping
 from generated_pb2 import payment_pb2, payment_pb2_grpc
-from ..options.grpc_client_options import GRPC_OPTIONS
 
 SERVICE_CATALOG = {
-    "create_payment": {
+    "payment_service": {
         "service": "payment",
         "stub": payment_pb2_grpc.PaymentServiceStub,
         # "target": "payment:50051",

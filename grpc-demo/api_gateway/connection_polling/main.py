@@ -69,7 +69,7 @@ async def create_payment(order_id: str, amount: int):
 
 @app.post("/pay-dynamic")
 async def create_payment(order_id: str, amount: int):
-    cfg = SERVICE_CATALOG["create_payment"]
+    cfg = SERVICE_CATALOG["payment_service"]
 
     stub = app.state.grpc_registry.get(cfg["service"])
 
@@ -80,6 +80,7 @@ async def create_payment(order_id: str, amount: int):
     })
     try:
         rpc = getattr(stub, cfg["method"])
+        print('=== RPC ======== ', rpc.__dict__)
         response = await rpc(request, timeout=2.0)
     except grpc.aio.AioRpcError as e:
         raise HTTPException(

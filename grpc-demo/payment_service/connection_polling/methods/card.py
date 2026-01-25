@@ -6,7 +6,6 @@ class CardPayment(PaymentMethod):
     async def process(self, request, registry):
         # Call Ledger service (Client)
         ledger = LedgerClient(request, registry)
-        led = await ledger.record_transaction()
 
         print(f"[PAYMENT] Payment {request.order_id}, Amount {request.amount}")
         return payment_pb2.PaymentResponse(

@@ -1,9 +1,12 @@
+import logging
 import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from ..options.grpc_client_options import GRPC_OPTIONS
 from ..grpc.service_catalog import SERVICE_CATALOG
 from ..common.grpc.client_registry_generic import GrpcClientRegistry
+
+logger = logging.getLogger(__name__)
 
 registry = GrpcClientRegistry(GRPC_OPTIONS)
 
@@ -29,6 +32,7 @@ async def lifespan(app: FastAPI):
             stub_cls=cfg["stub"],
             target=cfg["target"],
         )
+        print(f""" => Registered Clients: 🚀{str(cfg["service"]).capitalize()} Service""")
     
     app.state.grpc_registry = registry
 

@@ -5,7 +5,7 @@ from generated_pb2 import payment_pb2, ledger_pb2
 from .context.lifespan_context_single_client import payment_client, lifespan
 from .context.lifespan_context_multi_client import lifespan as multi_client_lifespan
 from .context.lifespan_context_generic import lifespan as lifespan_generic
-from .grpc.catalog import SERVICE_CATALOG
+from .grpc.service_catalog import SERVICE_CATALOG
 from .grpc.mapper import http_to_payment_request, payment_response_to_http
 
 # Connect with single grpc client

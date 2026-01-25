@@ -2,7 +2,7 @@ import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from ..options.grpc_client_options import GRPC_OPTIONS
-from ..grpc.catalog import SERVICE_CATALOG
+from ..grpc.service_catalog import SERVICE_CATALOG
 from ..common.grpc.client_registry_generic import GrpcClientRegistry
 
 registry = GrpcClientRegistry(GRPC_OPTIONS)

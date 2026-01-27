@@ -88,7 +88,7 @@ async def create_payment(order_id: str, amount: int):
 
     action_cfg = ACTION_CATALOG[action]
     mapper = MAPPER_REGISTRY[action]
-
+    
     stub = app.state.grpc_registry.get(
         action_cfg["service"]
     )
@@ -113,23 +113,3 @@ async def create_payment(order_id: str, amount: int):
 
     return mapper["from_grpc"](grpc_response)
 
-    # cfg = SERVICE_CATALOG["payment_service"]
-
-    # stub = app.state.grpc_registry.get(cfg["service"])
-
-    # request = http_to_payment_request(payload={
-    #     "order_id":order_id, 
-    #     "amount":amount, 
-    #     "method":"CARD"
-    # })
-    # try:
-    #     rpc = getattr(stub, cfg["method"])
-    #     print('=== RPC ======== ', rpc.__dict__)
-    #     response = await rpc(request, timeout=2.0)
-    # except grpc.aio.AioRpcError as e:
-    #     raise HTTPException(
-    #         status_code=502,
-    #         detail=f"{cfg['service']} service unavailable: {e.code().name} | Details: {e.details()} | Debug: {e.debug_error_string()}",
-    #     )
-
-    # return payment_response_to_http(response)

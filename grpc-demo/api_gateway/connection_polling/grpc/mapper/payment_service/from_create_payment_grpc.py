@@ -7,7 +7,7 @@ Routes NEVER import protobufs directly.
 """
 from generated_pb2 import payment_pb2
 
-def from_create_payment_grpc(response) -> dict:
+def from_create_payment_grpc(response: payment_pb2.PaymentResponse) -> dict:
     """
     Convert gRPC PaymentResponse to HTTP response dict.
 

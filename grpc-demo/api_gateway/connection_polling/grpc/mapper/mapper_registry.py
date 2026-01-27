@@ -10,8 +10,8 @@ from .payment_service import (
 
 MAPPER_REGISTRY = {
     "create_payment": {
-        "to_grpc": to_create_payment_grpc,
-        "from_grpc": from_create_payment_grpc,
+        "to_grpc": to_create_payment_grpc.to_create_payment_grpc,
+        "from_grpc": from_create_payment_grpc.from_create_payment_grpc,
     },
     # "refund_payment": {
     #     "to_grpc": to_refund_payment_grpc,

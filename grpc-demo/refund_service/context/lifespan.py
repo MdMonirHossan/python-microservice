@@ -3,7 +3,7 @@ import grpc
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from generated_pb2 import ledger_pb2_grpc
-from ..grpc.server import LedgerService
+from ..grpc.server import RefundService
 from ..registry.grpc_registry import GrpcClientRegistry
 from ..options.grpc_client_options import GRPC_OPTIONS
 from ..registry.service_catalog import SERVICE_CATALOG
@@ -40,8 +40,8 @@ async def lifespan(app: FastAPI):
     # =================================
     grpc_server = grpc.aio.server()
 
-    ledger_pb2_grpc.add_LedgerServiceServicer_to_server(
-        LedgerService(registry),
+    ledger_pb2_grpc.add_RefundServiceServicer_to_server(
+        RefundService(registry),
         grpc_server,
     )
 

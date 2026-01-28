@@ -2,7 +2,7 @@ import grpc
 from generated_pb2 import payment_pb2, payment_pb2_grpc
 from ..methods import METHOD_REGISTRY
 
-class PaymentService(payment_pb2_grpc.PaymentServiceServicer):
+class RefundService(payment_pb2_grpc.RefundServiceServicer):
     def __init__(self, registry):
         self.registry = registry
     

@@ -6,10 +6,10 @@ class RefundService(refund_pb2_grpc.RefundServiceServicer):
     def __init__(self, registry):
         self.registry = registry
     
-    async def CreatePayment(self, request, context):
+    async def CreateRefund(self, request, context):
         """
-        Docstring for CreatePayment
-        
+        Docstring for CreateRefund
+
         :param self: Description
         :param request: Description
         :param context: Description

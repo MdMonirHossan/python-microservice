@@ -45,12 +45,23 @@ class LedgerServiceStub(object):
                 request_serializer=ledger__pb2.LedgerRequest.SerializeToString,
                 response_deserializer=ledger__pb2.LedgerResponse.FromString,
                 _registered_method=True)
+        self.RecordRefund = channel.unary_unary(
+                '/ledger.LedgerService/RecordRefund',
+                request_serializer=ledger__pb2.RefundLedgerRequest.SerializeToString,
+                response_deserializer=ledger__pb2.RefundLedgerResponse.FromString,
+                _registered_method=True)
 
 
 class LedgerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def RecordTransaction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RecordRefund(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -63,6 +74,11 @@ def add_LedgerServiceServicer_to_server(servicer, server):
                     servicer.RecordTransaction,
                     request_deserializer=ledger__pb2.LedgerRequest.FromString,
                     response_serializer=ledger__pb2.LedgerResponse.SerializeToString,
+            ),
+            'RecordRefund': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecordRefund,
+                    request_deserializer=ledger__pb2.RefundLedgerRequest.FromString,
+                    response_serializer=ledger__pb2.RefundLedgerResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -92,6 +108,33 @@ class LedgerService(object):
             '/ledger.LedgerService/RecordTransaction',
             ledger__pb2.LedgerRequest.SerializeToString,
             ledger__pb2.LedgerResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RecordRefund(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ledger.LedgerService/RecordRefund',
+            ledger__pb2.RefundLedgerRequest.SerializeToString,
+            ledger__pb2.RefundLedgerResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -1,5 +1,5 @@
 from ..methods.base import RefundMethod
-from generated_pb2 import ledger_pb2, payment_pb2
+from generated_pb2 import refund_pb2
 from ..grpc.clients.ledger_client import LedgerClient
 
 class CardPaymentRefund(RefundMethod):
@@ -8,7 +8,7 @@ class CardPaymentRefund(RefundMethod):
         ledger = LedgerClient(request, registry)
 
         print(f"[REFUND] Order ID: {request.order_id}, Amount: {request.amount}")
-        return payment_pb2.PaymentResponse(
-            payment_id=request.order_id,
-            status="REFUNDED"
+        return refund_pb2.RefundResponse(
+            refund_id=request.order_id,
+            success=True,
         )

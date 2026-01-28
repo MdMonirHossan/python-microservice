@@ -8,6 +8,7 @@ class LedgerClient:
     async def record_transaction(self):
         ledger = self.registry.get("ledger")
 
+        print("[LEDGER] Recording transaction for order ID: {}".format(self.request.order_id))
         return await ledger.RecordTransaction(
             ledger_pb2.LedgerRequest(
                 payment_id=self.request.order_id,

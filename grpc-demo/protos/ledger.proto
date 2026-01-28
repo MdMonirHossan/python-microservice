@@ -5,12 +5,24 @@ package ledger;
 
 service LedgerService {
     rpc RecordTransaction (LedgerRequest) returns (LedgerResponse);
+
+    rpc RecordRefund (RefundLedgerRequest) returns (RefundLedgerResponse);
 }
 
 message LedgerRequest {
   string payment_id = 1;
   float amount = 2;
   string method = 3;
+}
+
+message RefundLedgerRequest {
+    string payment_id = 1;  // Payment ID
+    float amount = 2;       // Amount
+    string method = 3;      // Payment method
+}
+
+message RefundLedgerResponse {
+    bool success = 1;
 }
 
 message LedgerResponse {

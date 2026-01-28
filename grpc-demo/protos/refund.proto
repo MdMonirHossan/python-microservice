@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package refund;
+
+// Service Message 
+service RefundService {
+    rpc CreateRefund (RefundRequest) returns (RefundResponse);
+}
+
+// Request Message 
+message RefundRequest {
+    string payment_id = 1;
+    float amount = 2;
+    string method = 3;
+}
+
+// Response Message
+message RefundResponse {
+    string refund_id = 1;
+    bool success = 2;
+}

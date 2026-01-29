@@ -140,15 +140,12 @@ async def create_refund(payment_id: str, amount: int):
         "amount": amount,
         "method": "CARD_PAYMENT_REFUND",
     })
-    print('grpc_request-------- ', grpc_request)
     try:
         rpc = getattr(stub, action_cfg["rpc"])
-        print('rpc-------- ', rpc)
         grpc_response = await rpc(
             grpc_request,
             timeout=action_cfg["timeout"],
         )
-        print('grpc_response-------- ', grpc_response)
     except grpc.aio.AioRpcError as e:
         raise HTTPException(
             status_code=502,

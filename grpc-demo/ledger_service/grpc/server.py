@@ -29,3 +29,25 @@ class LedgerService(ledger_pb2_grpc.LedgerServiceServicer):
                 f"Internal error: {str(e)}"
             )
     
+    async def RecordRefund(self, request, context):
+        """
+        Docstring for CreateRefund
+        
+        :param self: Description
+        :param request: Description
+        :param context: Description
+        """
+        try:
+            handler = METHOD_REGISTRY[request.method]
+            return await handler.process(request, self.registry)
+        except KeyError:
+            await context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                f"Unknown payment method: {request.method}"
+            )
+        except Exception as e:
+            await context.abort(
+                grpc.StatusCode.INTERNAL,
+                f"Internal error: {str(e)}"
+            )
+    

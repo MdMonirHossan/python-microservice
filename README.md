@@ -50,3 +50,12 @@ Registry = connection owner
 
   curl -X POST "http://localhost:8000/pay-dynamic?order_id=order_123&amount=100"
 ```
+
+
+### Make Python able to see generated_pb2/
+Export PYTHONPATH (Local Dev)
+
+#### From project root:
+```bash
+export PYTHONPATH=$(pwd)/generated_pb2:$(pwd)
+```

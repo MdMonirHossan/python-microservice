@@ -18,10 +18,10 @@ ACTION_CATALOG = {
         "mapper": "create_payment",
         "timeout": 2.0,
     },
-    "refund_payment": {
-        "service": "payment",
-        "rpc": "RefundPayment",
-        "mapper": "refund_payment",
+    "create_refund": {
+        "service": "refund",
+        "rpc": "CreateRefund",
+        "mapper": "create_refund",
         "timeout": 2.0,
     },
     "get_payment_status": {

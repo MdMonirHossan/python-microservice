@@ -84,6 +84,10 @@ async def create_payment(order_id: str, amount: int):
 
 @app.post("/pay-dynamic")
 async def create_payment(order_id: str, amount: int):
+    """
+    This is a dynamic payment creation endpoint.
+    It uses the action catalog to find the appropriate action and mapper.
+    """
     action = "create_payment"
 
     action_cfg = ACTION_CATALOG[action]
@@ -113,3 +117,39 @@ async def create_payment(order_id: str, amount: int):
 
     return mapper["from_grpc"](grpc_response)
 
+
+@app.post("/refund")
+async def create_refund(payment_id: str, amount: int):
+    """
+    This is a dynamic refund creation endpoint.
+    It uses the action catalog to find the appropriate action and mapper.
+
+    """
+    action = "create_refund"
+
+    action_cfg = ACTION_CATALOG[action]
+    mapper = MAPPER_REGISTRY[action]
+    
+    stub = app.state.grpc_registry.get(
+        action_cfg["service"]
+    )
+
+    grpc_request = mapper["to_grpc"]({
+        "payment_id": payment_id,
+        "amount": amount,
+        "method": "CARD",
+    })
+
+    try:
+        rpc = getattr(stub, action_cfg["rpc"])
+        grpc_response = await rpc(
+            grpc_request,
+            timeout=action_cfg["timeout"],
+        )
+    except grpc.aio.AioRpcError as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"{action_cfg['service']} unavailable",
+        )
+
+    return mapper["from_grpc"](grpc_response)

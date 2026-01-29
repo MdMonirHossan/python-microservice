@@ -126,7 +126,7 @@ async def create_refund(payment_id: str, amount: int):
 
     """
     action = "create_refund"
-
+    
     action_cfg = ACTION_CATALOG[action]
     mapper = MAPPER_REGISTRY[action]
     
@@ -134,22 +134,25 @@ async def create_refund(payment_id: str, amount: int):
         action_cfg["service"]
     )
 
+    # ===================== Refund Service (Service 02) ==================
     grpc_request = mapper["to_grpc"]({
         "payment_id": payment_id,
         "amount": amount,
-        "method": "CARD",
+        "method": "CARD_PAYMENT_REFUND",
     })
-
+    print('grpc_request-------- ', grpc_request)
     try:
         rpc = getattr(stub, action_cfg["rpc"])
+        print('rpc-------- ', rpc)
         grpc_response = await rpc(
             grpc_request,
             timeout=action_cfg["timeout"],
         )
+        print('grpc_response-------- ', grpc_response)
     except grpc.aio.AioRpcError as e:
         raise HTTPException(
             status_code=502,
-            detail=f"{action_cfg['service']} unavailable",
+            detail=f"{action_cfg['service']} unavailable : {e.code().name}",
         )
 
     return mapper["from_grpc"](grpc_response)

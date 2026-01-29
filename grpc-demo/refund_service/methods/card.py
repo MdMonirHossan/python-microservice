@@ -6,9 +6,10 @@ class CardPaymentRefund(RefundMethod):
     async def process(self, request, registry):
         # Call Ledger service (Client)
         ledger = LedgerClient(request, registry)
+        await ledger.record_refund()
 
-        print(f"[REFUND] Order ID: {request.order_id}, Amount: {request.amount}")
+        print(f"[REFUND] Payment ID: {request.payment_id}, Amount: {request.amount}")
         return refund_pb2.RefundResponse(
-            refund_id=request.order_id,
+            refund_id=request.payment_id,
             success=True,
         )

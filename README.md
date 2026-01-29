@@ -40,3 +40,13 @@ Server = inbound APIs
 Client = outbound calls
 Mapper = protocol translator
 Registry = connection owner
+
+
+### CURL Request
+```bash
+  curl -X POST "http://localhost:8000/pay-dynamic?order_id=ORD1&amount=525"
+
+  curl -X POST "http://localhost:8000/refund?payment_id=pay_123&amount=100"
+
+  curl -X POST "http://localhost:8000/pay-dynamic?order_id=order_123&amount=100"
+```

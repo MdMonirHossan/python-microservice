@@ -16,9 +16,9 @@ class LedgerClient:
 
         return await ledger.RecordRefund(
             ledger_pb2.LedgerRequest(
-                payment_id=self.request.order_id,
+                payment_id=self.request.payment_id,
                 amount=self.request.amount,
-                method="CARD_PAYMENT_REFUND",
+                method="LEDGER",
             ),
             timeout=2.0,
         )

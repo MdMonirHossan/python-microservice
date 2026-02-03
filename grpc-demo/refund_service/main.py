@@ -8,7 +8,7 @@ import sys
 from fastapi import FastAPI
 import asyncio
 import grpc
-from context.lifespan import lifespan
+from .context.lifespan import lifespan
 
 print("-----PYTHONPATH at startup:", sys.path)
 

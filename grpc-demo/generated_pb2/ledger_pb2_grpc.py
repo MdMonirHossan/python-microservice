@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import ledger_pb2 as ledger__pb2
+import generated_pb2.ledger_pb2 as ledger__pb2
 
 GRPC_GENERATED_VERSION = '1.76.0'
 GRPC_VERSION = grpc.__version__

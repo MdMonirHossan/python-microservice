@@ -1,7 +1,16 @@
+"""
+Application entrypoint.
+
+Loads environment variables so PYTHONPATH is set
+before any imports of generated protobuf files.
+"""
+import sys
 from fastapi import FastAPI
 import asyncio
 import grpc
-from .context.lifespan import lifespan
+from context.lifespan import lifespan
+
+print("-----PYTHONPATH at startup:", sys.path)
 
 # For One GRPC Client
 # app = FastAPI(title="Refund Service", lifespan=lifespan)

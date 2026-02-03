@@ -6,7 +6,8 @@ setup(
     description="Payment Service for Python Microservice Demo",
     author="Your Name",
     author_email="your.email@example.com",
-    packages=find_packages(),
+    packages=find_packages() + ["generated_pb2"],
+    package_dir={"generated_pb2": "../generated_pb2"},
     install_requires=[
         "fastapi",
         "uvicorn",

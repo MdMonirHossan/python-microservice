@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package refund;
 
-option python_package = "refund_pb2";
-
 // Service Message 
 service RefundService {
     rpc CreateRefund (RefundRequest) returns (RefundResponse);

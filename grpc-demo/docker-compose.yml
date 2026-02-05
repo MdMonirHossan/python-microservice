@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  # API Gateway - The entry point for all requests
+  api_gateway:
+    build:
+      context: .
+      dockerfile: api_gateway/connection_polling/Dockerfile
+    container_name: api_gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - GATEWAY_PORT=8000
+      - JWT_SECRET_KEY=your-secret-key-change-in-production
+      - JWT_ALGORITHM=HS256
+      - SERVICE_DISCOVERY=dns
+    networks:
+      - grpc_network
+    depends_on:
+      payment_service:
+        condition: service_healthy
+      ledger_service:
+        condition: service_healthy
+      refund_service:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Payment Service - Handles payment processing
+  payment_service:
+    build:
+      context: .
+      dockerfile: payment_service/Dockerfile
+    container_name: payment_service
+    ports:
+      - "50051:50051"
+    environment:
+      - SERVICE_PORT=50051
+      - LEDGER_SERVICE_HOST=ledger_service
+      - LEDGER_SERVICE_PORT=50052
+    networks:
+      - grpc_network
+    depends_on:
+      ledger_service:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.insecure_channel('localhost:50051')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Ledger Service - Handles transaction records
+  ledger_service:
+    build:
+      context: .
+      dockerfile: ledger_service/Dockerfile
+    container_name: ledger_service
+    ports:
+      - "50052:50052"
+    environment:
+      - SERVICE_PORT=50052
+    networks:
+      - grpc_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.insecure_channel('localhost:50052')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Refund Service - Handles refund processing
+  refund_service:
+    build:
+      context: .
+      dockerfile: refund_service/Dockerfile
+    container_name: refund_service
+    ports:
+      - "50053:50053"
+    environment:
+      - SERVICE_PORT=50053
+      - LEDGER_SERVICE_HOST=ledger_service
+      - LEDGER_SERVICE_PORT=50052
+    networks:
+      - grpc_network
+    depends_on:
+      ledger_service:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import grpc; grpc.insecure_channel('localhost:50053')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  grpc_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
